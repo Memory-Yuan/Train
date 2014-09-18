@@ -1,0 +1,16 @@
+<footer class="footer navbar navbar-default navbar-fixed-bottom">
+  <div class="container">
+    <p class="navbar-text">
+        <%= link_to "Rails Training", "http://railstutorial.org/" %>
+        by Memory Yuan  
+    </p>
+    <nav>
+        <ul class="nav navbar-nav navbar-right">
+            <li <%= is_active(about_path) %>><%= link_to "About",   about_path %></li>
+            <li <%= is_active(contact_path) %>><%= link_to "Contact", contact_path %></li>
+            <li><%= link_to "News",    '#' %></li>
+        </ul>
+    </nav>
+  </div>
+    
+</footer>

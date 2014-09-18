@@ -12,6 +12,6 @@ class StaticPagesController < ApplicationController
   end
   
   def contact
-      @page_title = "About"
+      @page_title = "Contact"
   end
 end
