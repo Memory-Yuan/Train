@@ -23,10 +23,23 @@ module SessionsHelper
         # 一旦使用者轉到其他頁面，@current_user會消失，所以要加個||=User.find_by，如果不存在就從資料庫重抓
     end
     
+    def current_user?(user)
+        user == current_user
+    end
+    
     def sign_out
         current_user.update_attribute(:remember_token, User.hash(User.new_remember_token))
         self.current_user = nil
         cookies.delete(:remember_token)
+    end
+    
+    def redirect_back_or(default)
+       redirect_to(session[:return_to] || default)
+       session.delete(:return_to)
+    end
+    
+    def store_location
+        session[:return_to] = request.fullpath if request.get?
     end
     
 end

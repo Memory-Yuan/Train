@@ -1,0 +1,11 @@
+<h1>Update your profile</h1>
+
+<div class="form-signup">
+  <%= form_for(@user) do |f| %>
+    <%= render 'fields', f: f %>
+    <%= f.submit "Save edit.", class: "btn btn-large btn-primary" %>
+  <% end %>
+    
+    <%= gravatar_for @user %>
+  <a href="http://en.gravatar.com/gravatars/new/" target="_blank">change</a>
+</div>

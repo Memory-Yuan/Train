@@ -1,12 +1,22 @@
 class UsersController < ApplicationController
+  before_action :set_user,          only: [:show, :edit, :update, :destroy, :correct_user]
+  before_action :signed_in_user,    only: [:index, :edit, :update]
+  before_action :correct_user,      only: [:edit, :update]
+  before_action :admin_user,        only: :destroy
+  before_action :signed_in_needless_togo, only: [:new, :create]
     
+    def index
+        @page_title = "All users"
+        @users = User.paginate(page: params[:page]) #默認一頁30個
+    end
+  
   def show
-    @user = User.find(params[:id])
     @page_title = @user.name
   end
   
   def new
     @user = User.new
+    @page_title = "Sign up"
   end
   
   def create
@@ -20,10 +30,57 @@ class UsersController < ApplicationController
       end
   end
   
+  def edit
+      @page_title = "Edit user"
+  end
+  
+  def update
+      if @user.update_attributes(user_params)
+          flash[:success] = "Profile updated"
+          redirect_to @user
+      else
+          render 'edit'
+      end
+  end
+  
+  def destroy
+      if current_user?(@user)
+          flash[:danger] = "You kill yourself!"
+          redirect_to users_url
+      elsif @user.destroy
+          flash[:success] = "User destroyed."
+          redirect_to users_url
+      end
+  end
+  
   private
+  
+    def set_user
+        @user = User.find(params[:id])
+    end
   
     def user_params
   #      params.require(:user).permit!
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
+    
+    def signed_in_user
+        if !signed_in?
+            store_location
+            flash[:warning] = "Please sign in"
+            redirect_to signin_url
+        end
+    end
+    
+    def correct_user
+        redirect_to(root_path) unless current_user?(@user)
+    end
+    
+    def admin_user
+        redirect_to(root_path) unless current_user.admin?
+    end
+    
+    def signed_in_needless_togo
+        redirect_to(root_path) if signed_in?
     end
 end
