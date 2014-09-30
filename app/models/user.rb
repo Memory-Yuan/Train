@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+    has_many :microposts, dependent: :destroy
     before_save { self.email = email.downcase } #有的資料庫無法區分大小寫，所以為了確保唯一，只好存進去之前都轉成小寫
     before_create :create_remember_token
     
@@ -16,6 +17,10 @@ class User < ActiveRecord::Base
     
     def User.hash(token)
         Digest::SHA1.hexdigest(token.to_s)
+    end
+    
+    def feed
+        Micropost.where("user_id = ?", id)  #等於 microposts
     end
     
     private
