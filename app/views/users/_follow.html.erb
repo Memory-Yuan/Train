@@ -1,0 +1,5 @@
+<%= form_for(current_user.follower_followedships.build(followed_id: @user.id), remote: true) do |f| %>
+<%#*加上remote就變成ajax方式，拿掉就變回一般%>
+  <div><%= f.hidden_field :followed_id %></div>
+  <%= f.submit "Follow", class: "btn btn-large btn-primary" %>
+<% end %>

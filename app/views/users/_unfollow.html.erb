@@ -1,0 +1,5 @@
+<%= form_for(current_user.follower_followedships.find_by(followed_id: @user.id),
+  html: { method: :delete }, remote: true) do |f| %>
+<%#*加上remote就變成ajax方式，拿掉就變回一般%>
+  <%= f.submit "Unfollow", class: "btn btn-large btn-primary" %>
+<% end %>
